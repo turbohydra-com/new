@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>new</title>
+    <style type="text/css">
+        body {
+            display: flex;
+            align-items: center;
+            background-color: black;
+            color: #939393;
+            font-weight: bold;
+            font-family: 'Consolas', 'BitstreamVeraSansMono', 'CourierNew', Courier, monospace;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<script>
+    fetch('https://randomuser.me/api?results=10&nat=no,dk&inc=email')
+        .then(function (response) {
+            return response.json();
+        })
+        .then(function (data) {
+            if (data.results.length > 0) {
+                let persons = data.results;
+                appendData(persons)
+            } else {
+                appendError()
+            }
+        })
+        .catch(function (err) {
+            appendError()
+            console.log('error: ' + err);
+        });
+    function appendData(persons) {
+        var container = document.getElementById("data");
+
+        for (const idx in persons) {
+            const full_email = persons[idx].email;
+            const split_email = full_email.split("@")[0];
+
+            let div = document.createElement("div");
+            div.innerHTML = split_email;
+            container.appendChild(div);
+        }
+
+        document.getElementById("loading").remove();
+    }
+
+    function appendError() {
+        var container = document.getElementById("data");
+        let div = document.createElement("div");
+        div.innerHTML = "error, try again";
+        container.appendChild(div);
+        document.getElementById("loading").remove();
+    }
+</script>
+
+<body>
+    <div id="data">
+        <span id="loading">loading...</span>
+    </div>
+</body>
+
+</html>
